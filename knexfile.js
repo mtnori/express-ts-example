@@ -1,8 +1,8 @@
-// Update with your config settings.
+const { knexSnakeCaseMappers } = require('objection');
 
 module.exports = {
   development: {
-    client: 'mysql',
+    client: 'mysql2',
     connection: {
       database: 'practice',
       user: 'root',
@@ -14,7 +14,14 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations'
+    },
+    typeCast(field, next) {
+      if (field.type === 'TINY' && field.length === 1) {
+        return field.string() === '1'; // 1 = true, 0 = false
+      }
+      return next();
     }
+    // ...knexSnakeCaseMappers()
   },
 
   staging: {
@@ -30,7 +37,8 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations'
-    }
+    },
+    ...knexSnakeCaseMappers()
   },
 
   production: {
@@ -46,6 +54,7 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations'
-    }
+    },
+    ...knexSnakeCaseMappers()
   }
 };

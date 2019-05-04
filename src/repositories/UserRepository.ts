@@ -5,6 +5,20 @@ async function findById(id: number) {
   return user;
 }
 
+async function insert(user: User) {
+  const result = await User.query().insert(user);
+  return result;
+}
+
+async function update(id: number, user: User) {
+  const result = await User.query()
+    .update(user)
+    .where('id', id);
+  return result;
+}
+
 export default {
-  findById
+  findById,
+  insert,
+  update
 };
