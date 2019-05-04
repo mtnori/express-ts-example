@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Model } from 'objection';
+import { Model, snakeCaseMappers } from 'objection';
 
 export default class BaseModel extends Model {
   timestamps: boolean;
@@ -7,6 +7,10 @@ export default class BaseModel extends Model {
   createdAt?: string;
 
   updatedAt?: string;
+
+  static get columnNameMappers() {
+    return snakeCaseMappers();
+  }
 
   $beforeInsert() {
     if (this.timestamps) {
