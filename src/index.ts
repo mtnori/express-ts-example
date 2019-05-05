@@ -3,8 +3,8 @@ import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import { Model } from 'objection';
 
-import UsersController from './controllers/UsersController';
 import knexConfig from './knexConfig';
+import registerApi from './routes';
 
 // Knexの設定
 Model.knex(knexConfig);
@@ -24,11 +24,12 @@ app
       extended: true
     })
   )
-  .use(bodyParser.json());
+  .use(bodyParser.json())
+  .use(router);
 
 const port = 3000;
 
 // ルーティング設定
-app.use('/users', UsersController(router));
+registerApi(router);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
